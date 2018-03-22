@@ -15,6 +15,7 @@ var interval;
 //alert(cards[4]);
 //console.log(cards);
 
+document.addEventListener('board',)
 
 for (var X = 0; X < cards.length; X++) {
     var cX = document.getElementById('c' + X);
@@ -30,11 +31,10 @@ function game() {
         }
         $('article').append("<div class=\"score\">Turn Counter: 0</div>");
         $('article').append("<div class=\"timer\"></div>");
-        catchBoard();
     }
+
     play();
 
-    //rysowanie tablicy
     function catchBoard() {
         for (let i = 0; i < 36; i++) {
             document.getElementById('c' + i).addEventListener("click", function () {
@@ -42,78 +42,78 @@ function game() {
             });
         };
     };
-}
+    catchBoard();
 
-function startTimer() {
-    interval = setInterval(function () {
-        $('.timer').html(minute + " mins " + second + " secs");
-        second++;
-        if (second == 60) {
-            minute++;
-            second = 0;
-        }
-        if (minute == 60) {
-            hour++;
-            minute = 0;
-        }
-    }, 1000);
-}
+    function startTimer() {
+        interval = setInterval(function () {
+            $('.timer').html(minute + " mins " + second + " secs");
+            second++;
+            if (second == 60) {
+                minute++;
+                second = 0;
+            }
+            if (minute == 60) {
+                hour++;
+                minute = 0;
+            }
+        }, 1000);
+    }
 
-function revealCard(nr) {
-    var opacityValue = $('#c' + nr).css('opacity');
+    function revealCard(nr) {
+        var opacityValue = $('#c' + nr).css('opacity');
 
-    //alert('Opacity: '+opacityValue);
+        //alert('Opacity: '+opacityValue);
 
-    if (opacityValue != 0 && lock == false) {
-        lock = true;
+        if (opacityValue != 0 && lock == false) {
+            lock = true;
 
-        //alert(nr);
+            //alert(nr);
 
-        var image = "url(img/" + cards[nr] + ")";
+            var image = "url(img/" + cards[nr] + ")";
 
-        $('#c' + nr).css('background-image', image);
-        $('#c' + nr).addClass('cardA');
-        $('#c' + nr).removeClass('card');
+            $('#c' + nr).css('background-image', image);
+            $('#c' + nr).addClass('cardA');
+            $('#c' + nr).removeClass('card');
 
-        if (oneVisible == false) {
-            //first card
+            if (oneVisible == false) {
+                //first card
 
-            oneVisible = true;
-            visible_nr = nr;
-            lock = false;
-        } else {
-            //second card
-            if (visible_nr != nr) {
-                if (cards[visible_nr] == cards[nr]) {
-                    //alert("para");
-                    setTimeout(function () {
-                        hide2Cards(nr, visible_nr)
-                    }, 750);
-
-                } else {
-                    //alert("pudło");
-                    setTimeout(function () {
-                        restore2Cards(nr, visible_nr)
-                    }, 1000);
-
-                }
-
-                turnCounter++;
-                $('.score').html('Turn counter: ' + turnCounter);
-                oneVisible = false;
-                if (turnCounter == 1) {
-                    second = 0;
-                    minute = 0;
-                    hour = 0;
-                    startTimer();
-                }
-            } else {
+                oneVisible = true;
+                visible_nr = nr;
                 lock = false;
+            } else {
+                //second card
+                if (visible_nr != nr) {
+                    if (cards[visible_nr] == cards[nr]) {
+                        //alert("para");
+                        setTimeout(function () {
+                            hide2Cards(nr, visible_nr)
+                        }, 750);
+
+                    } else {
+                        //alert("pudło");
+                        setTimeout(function () {
+                            restore2Cards(nr, visible_nr)
+                        }, 1000);
+
+                    }
+
+                    turnCounter++;
+                    $('.score').html('Turn counter: ' + turnCounter);
+                    oneVisible = false;
+                    if (turnCounter == 1) {
+                        second = 0;
+                        minute = 0;
+                        hour = 0;
+                        startTimer();
+                    }
+                } else {
+                    lock = false;
+                }
             }
         }
     }
 }
-
 
 
 function hide2Cards(nr1, nr2) {
@@ -123,7 +123,10 @@ function hide2Cards(nr1, nr2) {
     pairsLeft--;
 
     if (pairsLeft == 0) {
-        $('.board').html('<h1>You win!<br>Done in ' + turnCounter + ' turns</h1>');
+        $('.board').html('<h1>You win!</br>Done in ' + turnCounter + ' turns</br> ' + minute + ' mins ' + second + ' secs</h1>');
+        $('.score').remove();
+        $('.timer').remove();
+        clearInterval(interval);
     }
 
     lock = false;
