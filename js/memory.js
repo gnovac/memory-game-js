@@ -12,10 +12,6 @@ var second = 0;
 var minute = 0;
 var hour = 0;
 var interval;
-//alert(cards[4]);
-//console.log(cards);
-
-document.addEventListener('board',)
 
 for (var X = 0; X < cards.length; X++) {
     var cX = document.getElementById('c' + X);
